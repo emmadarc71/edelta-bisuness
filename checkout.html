@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client - Checkout & Order Confirmation</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="checkout.html">
+    <link rel="stylesheet" href="home.html">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            height: 150px;
+           
+        }
+        
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo img {
+            font-size: 2rem0;
+            font-weight: 100;
+            border-radius: 50%;
+            width: 90px;
+            height: 90px;
+            display: flex;
+            margin-left: 0%;
+            margin-top: 0%;
+            margin-bottom: 0%;
+        }
+        .logo  {
+            
+            
+            margin-bottom: -4%;
+        }
+        .logo p {
+            margin-left: 0%;
+            margin-top: 0%;
+            margin-bottom: 0%;
+        }
+        .cart-icon {
+            position: relative;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .cart-count {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 22px;
+            height: 22px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav a {
+            color: white;
+            text-decoration: none;
+            margin-right: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        
+        .nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+       
+        
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .checkout-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+        
+        .cart-summary {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            height: fit-content;
+        }
+        
+        .cart-summary h2 {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .cart-items {
+            margin-bottom: 1.5rem;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .item-details {
+            flex-grow: 1;
+            margin-left: 1rem;
+        }
+        
+        .item-name {
+            font-weight: 600;
+        }
+        
+        .item-price {
+            color: #6a11cb;
+            font-weight: 600;
+        }
+        
+        .item-controls {
+            display: flex;
+            align-items: center;
+        }
+        
+        .remove-item {
+            background: none;
+            border: none;
+            color: #ff4757;
+            cursor: pointer;
+            margin-left: 1rem;
+        }
+        
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .total {
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid #eee;
+        }
+        
+        .checkout-form {
+            background-color: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+        
+        .checkout-form h2 {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: opacity 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .confirmation-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .confirmation-content {
+            background-color: white;
+            width: 90%;
+            max-width: 600px;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .confirmation-icon {
+            font-size: 4rem;
+            color: #23ad5c;
+            margin-bottom: 1.5rem;
+        }
+        
+        .confirmation-content h2 {
+            margin-bottom: 1rem;
+        }
+        
+        .confirmation-content p {
+            margin-bottom: 1.5rem;
+            color: #666;
+        }
+        
+        .email-preview {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            text-align: left;
+        }
+        
+        .email-preview h3 {
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .email-content {
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .email-content p {
+            margin-bottom: 1rem;
+        }
+        
+        footer {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        /* New styles for payment method details */
+        .payment-details {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .payment-details.active {
+            display: block;
+        }
+        
+        .bank-info {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .bank-detail {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .bank-detail:last-child {
+            border-bottom: none;
+        }
+        
+        .bank-detail .label {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .bank-detail .value {
+            color: #6a11cb;
+            font-family: monospace;
+        }
+        
+        .card-details-form {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .card-icons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .card-icon {
+            width: 40px;
+            height: 25px;
+            background-color: #f1f1f1;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-size: 1.2rem;
+        }
+        
+        .payment-instructions {
+            background-color: #e8f4fd;
+            border-left: 4px solid #2575fc;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .payment-instructions h4 {
+            color: #2575fc;
+            margin-bottom: 0.5rem;
+        }
+        
+        .important-note {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 4px;
+        }
+        
+        .important-note h4 {
+            color: #856404;
+            margin-bottom: 0.5rem;
+        }
+        
+        .payment-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+        
+        .step-number {
+            background-color: #6a11cb;
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            flex-shrink: 0;
+        }
+        
+        @media (max-width: 768px) {
+            .checkout-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <div class="logo">
+                    <span class="logo-text">E-DELTA-LLC</span><img src="images/e_Delta_Logo.png" alt="Logo">
+                    <p><h6>Contact Us: 1 (347) 737-4018 or 1 (347) 891-5883</h6></p>
+                </div>
+                
+            </div>
+            <div class="nav">
+                <a href="home.html">Home</a>
+                <a href="checkout.html">Checkout</a>
+            </div>
+            <div class="cart-icon" id="cartIcon">
+                <i class="fas fa-shopping-cart"></i>
+                <div class="cart-count">0</div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="checkout-container">
+            <div class="checkout-form">
+                <h2>Shipping & Payment Information</h2>
+                <form id="orderForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">First Name *</label>
+                            <input type="text" id="firstName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Last Name *</label>
+                            <input type="text" id="lastName" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email Address *</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="address">Shipping Address *</label>
+                        <input type="text" id="address" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="city">City *</label>
+                            <input type="text" id="city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="zipCode">ZIP Code *</label>
+                            <input type="text" id="zipCode" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="country">Country *</label>
+                        <select id="country" required>
+                            <option value="">Select Country</option>
+                            <option value="usa">United States</option>
+                            <option value="uk">United Kingdom</option>
+                            <option value="canada">Canada</option>
+                            <option value="australia">Australia</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="paymentMethod">Payment Method *</label>
+                        <select id="paymentMethod" required>
+                            <option value="">Select Payment Method</option>
+                            <option value="credit">Credit Card (Visa/Mastercard/Amex/Discover)</option>
+                            <option value="debit">Debit Card</option>
+                            <option value="zelle">Zelle® to: +1 (347) 737-4018</option>
+                            <option value="paypal">PayPal</option>
+                            <option value="applepay">Apple Pay</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Payment Method Details Container -->
+                    <div id="paymentDetailsContainer">
+                        <!-- Content will be dynamically inserted here -->
+                    </div>
+                    
+                    <div class="important-note">
+                        <h4><i class="fas fa-exclamation-circle"></i> Important:</h4>
+                        <p>Orders will be processed once payment is confirmed. For bank transfers, please include your order number in the payment reference.</p>
+                    </div>
+                    
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-lock"></i> Complete Order Securely
+                    </button>
+                </form>
+            </div>
+            
+            <div class="cart-summary">
+                <h2>Order Summary</h2>
+                <div class="cart-items" id="cartItemsContainer">
+                    <!-- Cart items will be loaded dynamically here -->
+                    <div class="empty-cart">Your cart is empty</div>
+                </div>
+                
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotalDisplay">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Shipping:</span>
+                    <span id="shippingDisplay">$0.00</span>
+                </div>
+                <div class="summary-row">
+                    <span>Tax (6%):</span>
+                    <span id="taxDisplay">$0.00</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="totalDisplay">$0.00</span>
+                </div>
+                
+                <div class="payment-instructions">
+                    <h4><i class="fas fa-shield-alt"></i> Secure Payment</h4>
+                    <p>All payments are processed securely. Your financial information is protected with 256-bit SSL encryption.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="confirmation-modal" id="confirmationModal">
+        <div class="confirmation-content">
+            <div class="confirmation-icon">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h2>Order Confirmed!</h2>
+            <p>Thank you for your purchase. A confirmation email has been sent to your inbox.</p>
+            <p>We've also notified our team about your order.</p>
+            
+            <div class="email-preview">
+                <h3>Order & Payment Instructions</h3>
+                <div class="email-content" id="emailContent">
+                    <!-- Email content will be generated here -->
+                </div>
+            </div>
+            
+            <button class="submit-btn" style="margin-top: 1.5rem;" id="continueShopping">Continue Shopping</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 E-DELTA-LLC. All rights reserved.</p>
+        <p><i class="fas fa-lock"></i> Secure Payment Processing | <i class="fas fa-phone"></i> Support: 1 (347) 737-4018</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderForm = document.getElementById('orderForm');
+            const confirmationModal = document.getElementById('confirmationModal');
+            const continueShoppingBtn = document.getElementById('continueShopping');
+            const emailContent = document.getElementById('emailContent');
+            const cartItemsContainer = document.getElementById('cartItemsContainer');
+            const cartCount = document.querySelector('.cart-count');
+            const paymentMethodSelect = document.getElementById('paymentMethod');
+            const paymentDetailsContainer = document.getElementById('paymentDetailsContainer');
+            
+            // Your Business Bank Account Information
+            const businessBankInfo = {
+                name: "E-delta LLC",
+                accountNumber: "383017517973",
+                phone: "+1 (347) 737-4018",
+                email: "emmadarc71@gmail.com",
+                address: "Shipping address provided during checkout"
+            };
+            
+            // Credit Card Parameters
+            const acceptedCards = {
+                visa: { minLength: 13, maxLength: 19, pattern: /^4[0-9]{12}(?:[0-9]{3})?$/ },
+                mastercard: { minLength: 16, pattern: /^5[1-5][0-9]{14}$/ },
+                amex: { minLength: 15, pattern: /^3[47][0-9]{13}$/ },
+                discover: { minLength: 16, pattern: /^6(?:011|5[0-9]{2})[0-9]{12}$/ }
+            };
+            
+            // Load cart data from localStorage
+            let checkoutData = JSON.parse(localStorage.getItem('checkoutData')) || {
+                cart: [],
+                subtotal: 0,
+                shipping: 0,
+                total: 0
+            };
+            
+            // Update cart count display
+            const totalItems = checkoutData.cart.reduce((total, item) => total + (item.quantity || 0), 0);
+            cartCount.textContent = totalItems;
+            
+            // Display cart items
+            function displayCartItems() {
+                cartItemsContainer.innerHTML = '';
+                
+                if (checkoutData.cart.length === 0) {
+                    cartItemsContainer.innerHTML = '<div class="empty-cart">Your cart is empty</div>';
+                    return;
+                }
+                
+                checkoutData.cart.forEach(item => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <img src="${item.image}" alt="${item.name}" width="60" height="60">
+                        <div class="item-details">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">$${item.price.toFixed(2)} x ${item.quantity}</div>
+                        </div>
+                        <div class="item-controls">
+                            <div class="item-total">$${(item.price * item.quantity).toFixed(2)}</div>
+                        </div>
+                    `;
+                    cartItemsContainer.appendChild(cartItem);
+                });
+                
+                // Calculate totals
+                const subtotal = checkoutData.cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+                const shipping = subtotal > 0 ? 5.99 : 0;
+                const tax = subtotal * 0.06; // 6% tax
+                const total = subtotal + shipping + tax;
+                
+                // Update display
+                document.getElementById('subtotalDisplay').textContent = `$${subtotal.toFixed(2)}`;
+                document.getElementById('shippingDisplay').textContent = `$${shipping.toFixed(2)}`;
+                document.getElementById('taxDisplay').textContent = `$${tax.toFixed(2)}`;
+                document.getElementById('totalDisplay').textContent = `$${total.toFixed(2)}`;
+                
+                // Save updated totals
+                checkoutData.subtotal = subtotal;
+                checkoutData.shipping = shipping;
+                checkoutData.tax = tax;
+                checkoutData.total = total;
+            }
+            
+            // Show payment method details based on selection
+            function showPaymentDetails(method) {
+                paymentDetailsContainer.innerHTML = '';
+                
+                if (method === 'bank-transfer') {
+                    const orderNumber = 'EDL' + Date.now().toString().slice(-8);
+                    paymentDetailsContainer.innerHTML = `
+                        <div class="payment-details active">
+                            <div class="payment-instructions">
+                                <h4><i class="fas fa-university"></i> Bank Transfer Instructions</h4>
+                                <p>Please use the following bank details for your transfer. Include the Order Number in the payment reference.</p>
+                            </div>
+                            
+                            <div class="bank-info">
+                                <div class="bank-detail">
+                                    <span class="label">Order Number:</span>
+                                    <span class="value">${orderNumber}</span>
+                                </div>
+                                <div class="bank-detail">
+                                    <span class="label">Account Name:</span>
+                                    <span class="value">${businessBankInfo.name}</span>
+                                </div>
+                                <div class="bank-detail">
+                                    <span class="label">Account Number:</span>
+                                    <span class="value">${businessBankInfo.accountNumber}</span>
+                                </div>
+                                <div class="bank-detail">
+                                    <span class="label">Routing Number (ACH):</span>
+                                    <span class="value">${businessBankInfo.routingNumber}</span>
+                                </div>
+                                <div class="bank-detail">
+                                    <span class="label">Wire Routing:</span>
+                                    <span class="value">${businessBankInfo.wireRouting}</span>
+                                </div>
+                                <div class="bank-detail">
+                                    <span class="label">Total Amount:</span>
+                                    <span class="value">$${checkoutData.total.toFixed(2)}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="payment-step">
+                                <div class="step-number">1</div>
+                                <div>Transfer $${checkoutData.total.toFixed(2)} to the account above</div>
+                            </div>
+                            <div class="payment-step">
+                                <div class="step-number">2</div>
+                                <div>Include Order Number <strong>${orderNumber}</strong> in payment reference</div>
+                            </div>
+                            <div class="payment-step">
+                                <div class="step-number">3</div>
+                                <div>Email receipt to ${businessBankInfo.email}</div>
+                            </div>
+                        </div>
+                    `;
+                } else if (method === 'credit' || method === 'debit') {
+                    const orderNumber = 'EDL' + Date.now().toString().slice(-8);
+                    paymentDetailsContainer.innerHTML = `
+                        <div class="payment-details active">
+                            <div class="card-icons">
+                                <div class="card-icon" title="Visa">
+                                    <i class="fab fa-cc-visa"></i>
+                                </div>
+                                <div class="card-icon" title="Mastercard">
+                                    <i class="fab fa-cc-mastercard"></i>
+                                </div>
+                                <div class="card-icon" title="American Express">
+                                    <i class="fab fa-cc-amex"></i>
+                                </div>
+                                <div class="card-icon" title="Discover">
+                                    <i class="fab fa-cc-discover"></i>
+                                </div>
+                            </div>
+                            
+                            <div class="card-details-form">
+                                <div class="form-group">
+                                    <label for="cardNumber">Card Number *</label>
+                                    <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" 
+                                           maxlength="19" pattern="[0-9\s]{13,19}" required>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="cardName">Name on Card *</label>
+                                        <input type="text" id="cardName" placeholder="John Doe" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="expiryDate">Expiry Date *</label>
+                                        <input type="text" id="expiryDate" placeholder="MM/YY" 
+                                               pattern="(0[1-9]|1[0-2])\/[0-9]{2}" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="cvv">CVV *</label>
+                                        <input type="text" id="cvv" placeholder="123" 
+                                               pattern="[0-9]{3,4}" maxlength="4" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="zip">Billing ZIP Code *</label>
+                                        <input type="text" id="zip" placeholder="12345" 
+                                               pattern="[0-9]{5}" maxlength="5" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="payment-instructions">
+                                <h4><i class="fas fa-lock"></i> Secure Payment</h4>
+                                <p>Your card details are encrypted and processed securely. We never store your full card information.</p>
+                            </div>
+                        </div>
+                    `;
+                } else if (method === 'zelle') {
+                    paymentDetailsContainer.innerHTML = `
+                        <div class="payment-details active">
+                            <div class="payment-instructions">
+                                <h4><i class="fas fa-mobile-alt"></i> Zelle® Payment Instructions</h4>
+                                <p>Send payment via Zelle® to the following phone number:</p>
+                            </div>
+                            
+                            <div class="bank-info">
+                                <div class="bank-detail">
+                                    <span class="label">Zelle® Phone Number:</span>
+                                    <span class="value">${businessBankInfo.phone}</span>
+                                </div>
+                                <div class="bank-detail">
+                                    <span class="label">Recipient Name:</span>
+                                    <span class="value">E-delta LLC</span>
+                                </div>
+                                <div class="bank-detail">
+                                    <span class="label">Amount:</span>
+                                    <span class="value">$${checkoutData.total.toFixed(2)}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="payment-step">
+                                <div class="step-number">1</div>
+                                <div>Open your Zelle® app or banking app</div>
+                            </div>
+                            <div class="payment-step">
+                                <div class="step-number">2</div>
+                                <div>Send payment to phone number: <strong>${businessBankInfo.phone}</strong></div>
+                            </div>
+                            <div class="payment-step">
+                                <div class="step-number">3</div>
+                                <div>Include your order number in the memo field</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }
+            
+            // Event listener for payment method change
+            paymentMethodSelect.addEventListener('change', function() {
+                showPaymentDetails(this.value);
+            });
+            
+            // Initialize cart display
+            displayCartItems();
+            
+            // Handle form submission
+            orderForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Check if cart is empty
+                if (checkoutData.cart.length === 0) {
+                    alert('Your cart is empty. Please add items before checking out.');
+                    return;
+                }
+                
+                // Get form values
+                const firstName = document.getElementById('firstName').value;
+                const lastName = document.getElementById('lastName').value;
+                const email = document.getElementById('email').value;
+                const phone = document.getElementById('phone').value;
+                const address = document.getElementById('address').value;
+                const city = document.getElementById('city').value;
+                const zipCode = document.getElementById('zipCode').value;
+                const country = document.getElementById('country').value;
+                const paymentMethod = document.getElementById('paymentMethod').value;
+                
+                // Generate order number
+                const orderNumber = 'EDL' + Date.now().toString().slice(-8);
+                
+                // Generate order items list for email
+                const orderItems = checkoutData.cart.map(item => 
+                    `${item.name} (Qty: ${item.quantity}) - $${(item.price * item.quantity).toFixed(2)}`
+                ).join(', ');
+                
+                const orderTotal = checkoutData.total.toFixed(2);
+                
+                // Create email content based on payment method
+                let paymentInstructions = '';
+                
+                switch(paymentMethod) {
+                    case 'bank-transfer':
+                        paymentInstructions = `
+                            <p><strong>Payment Method:</strong> Bank Transfer</p>
+                            <p><strong>Payment Instructions:</strong></p>
+                            <p>Please transfer $${orderTotal} to:</p>
+                            <p>Bank: Your Bank Name<br>
+                            Account Name: ${businessBankInfo.name}<br>
+                            Account Number: ${businessBankInfo.accountNumber}<br>
+                            Routing Number: ${businessBankInfo.routingNumber}<br>
+                            Wire Routing: ${businessBankInfo.wireRouting}</p>
+                            <p><strong>IMPORTANT:</strong> Include Order Number ${orderNumber} in the payment reference.</p>
+                        `;
+                        break;
+                    
+                    case 'credit':
+                    case 'debit':
+                        paymentInstructions = `
+                            <p><strong>Payment Method:</strong> ${paymentMethod === 'credit' ? 'Credit Card' : 'Debit Card'}</p>
+                            <p><strong>Payment Status:</strong> Pending Authorization</p>
+                            <p>Your card will be charged $${orderTotal}. You will receive a separate payment confirmation.</p>
+                        `;
+                        break;
+                    
+                    case 'zelle':
+                        paymentInstructions = `
+                            <p><strong>Payment Method:</strong> Zelle®</p>
+                            <p><strong>Payment Instructions:</strong></p>
+                            <p>Please send $${orderTotal} via Zelle® to:</p>
+                            <p>Phone Number: ${businessBankInfo.phone}<br>
+                            Recipient: E-delta LLC</p>
+                            <p><strong>IMPORTANT:</strong> Include Order Number ${orderNumber} in the memo field.</p>
+                        `;
+                        break;
+                    
+                    default:
+                        paymentInstructions = `<p><strong>Payment Method:</strong> ${paymentMethod}</p>`;
+                }
+                
+                emailContent.innerHTML = `
+                    <p><strong>To Store Owner (${businessBankInfo.email}) and Customer (${email}):</strong></p>
+                    <p><strong>Subject:</strong> Order Confirmation - Order #${orderNumber}</p>
+                    <p>Dear Store Owner and Customer,</p>
+                    <p>A new order has been placed on E-DELTA-LLC store.</p>
+                    <p><strong>Order Number:</strong> ${orderNumber}</p>
+                    <p><strong>Customer Information:</strong></p>
+                    <p>- Name: ${firstName} ${lastName}</p>
+                    <p>- Email: ${email}</p>
+                    <p>- Phone: ${phone}</p>
+                    <p>- Address: ${address}, ${city}, ${zipCode}, ${country}</p>
+                    ${paymentInstructions}
+                    <p><strong>Order Details:</strong></p>
+                    <p>${orderItems}</p>
+                    <p>- Subtotal: $${checkoutData.subtotal.toFixed(2)}</p>
+                    <p>- Shipping: $${checkoutData.shipping.toFixed(2)}</p>
+                    <p>- Tax (6%): $${checkoutData.tax.toFixed(2)}</p>
+                    <p><strong>Order Total: $${orderTotal}</strong></p>
+                    <p>Order will be shipped to the address provided above.</p>
+                    <p>Please process this order once payment is confirmed.</p>
+                    <p>Best regards,<br>E-DELTA-LLC System<br>Phone: ${businessBankInfo.phone}</p>
+                `;
+                
+                // Show confirmation modal
+                confirmationModal.style.display = 'flex';
+                
+                // Log order details
+                console.log(`=== NEW ORDER #${orderNumber} ===`);
+                console.log(`Customer: ${firstName} ${lastName} (${email}, ${phone})`);
+                console.log(`Shipping: ${address}, ${city}, ${zipCode}, ${country}`);
+                console.log(`Payment Method: ${paymentMethod}`);
+                console.log(`Total: $${orderTotal}`);
+                console.log(`Items: ${orderItems}`);
+                console.log(`=== ADMIN NOTIFICATION SENT TO ${businessBankInfo.email} ===`);
+                console.log(`=== CUSTOMER NOTIFICATION SENT TO ${email} ===`);
+                
+                // Save order to localStorage for records
+                const orderRecord = {
+                    orderNumber: orderNumber,
+                    customer: { firstName, lastName, email, phone, address, city, zipCode, country },
+                    paymentMethod: paymentMethod,
+                    items: checkoutData.cart,
+                    totals: {
+                        subtotal: checkoutData.subtotal,
+                        shipping: checkoutData.shipping,
+                        tax: checkoutData.tax,
+                        total: checkoutData.total
+                    },
+                    timestamp: new Date().toISOString()
+                };
+                
+                // Save order to orders history
+                let ordersHistory = JSON.parse(localStorage.getItem('ordersHistory')) || [];
+                ordersHistory.push(orderRecord);
+                localStorage.setItem('ordersHistory', JSON.stringify(ordersHistory));
+                
+                // Clear cart data
+                localStorage.removeItem('checkoutData');
+                cartCount.textContent = '0';
+            });
+            
+            // Continue shopping button
+            continueShoppingBtn.addEventListener('click', function() {
+                confirmationModal.style.display = 'none';
+                orderForm.reset();
+                paymentDetailsContainer.innerHTML = '';
+                window.location.href = 'index.html';
+            });
+            
+            // Initialize payment details if method is already selected
+            if (paymentMethodSelect.value) {
+                showPaymentDetails(paymentMethodSelect.value);
+            }
+        });
+    </script>
+</body>
+</html>
